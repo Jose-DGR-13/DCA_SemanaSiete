@@ -5,12 +5,14 @@ import java.util.regex.Pattern;
 
 import processing.core.PApplet;
 import processing.core.PImage;
+import processing.core.PShape;
 
 //En la carpeta docs queda un diagrama de clases basico para tener una idea de como se va a trabajar
 
 public class Logica {
 	//Atributes
 	PApplet app = MainApp.app;
+	PShape zoomIn,zoomOut, fullScreen, noFullScreen, rotateL, rotateR, imgFile, imgNext, imgPrev;
 	
 	//Relaciones
 	ArrayList<Archivo> archivosArray;
@@ -26,6 +28,10 @@ public class Logica {
 		archivosArray = new ArrayList<Archivo>();
 		archivosLinked = new LinkedList<Archivo>();
 		crearImagenes();
+		loadShapes();
+		
+		//Por defecto carga el primer elemento del arrayList para mostrarlo
+		selector = archivosArray.get(0);
 	}
 	
 	//Cargar Imagenes y Crear objetos Archivo
@@ -67,9 +73,55 @@ public class Logica {
 	}
 	
 	public void pintarInterfaz(){
-		/*
-		 * Metodo para pintar interfaz, botones de interaccion y de mas
-		 * */
+		//Left Panel
+		
+		//gray bg
+		app.fill(200,200,200);
+		app.rect(0, 0, 280, 720);
+		
+		//text1
+		app.fill(255,255,255);
+		app.text("Lista de Imagenes", 50, 20);
+		
+		//icon1
+		app.shapeMode(app.CENTER);
+		imgFile.disableStyle(); // Ignore the colors in the SVG
+		app.fill(255, 255, 255); // Set the SVG fill to blue
+		app.strokeWeight(1);
+		app.stroke(0,0,0);
+		app.shape(imgFile, 25, 15, 20, 20);
+		
+		//Image List - Por ahora solo el arrayList, cuando ordene, debe tomarlo del linkedList
+		for (int i = 0; i < archivosArray.size(); i++) {
+			app.fill(0,0,0);
+			app.text(archivosArray.get(i).name, 20, 50+(20*i));
+		}
+		
+		//Pintar Imagen seleccionada
+		app.imageMode(app.CENTER);
+		app.image(selector.img, 500+280, 360);
+		
+		//Pintar resto de iconos
+		app.shape(zoomIn, 760, 700, 20, 20);
+		app.shape(zoomOut, 780, 700, 20, 20);
+		app.shape(rotateL, 740, 700, 20, 20);
+		app.shape(rotateR, 800, 700, 20, 20);
+		app.shape(imgPrev, 300, 360, 20, 20);
+		app.shape(imgNext, 1260, 360, 20, 20);
+		app.shape(fullScreen, 1260, 15, 20, 20);
+		app.shape(noFullScreen, 1240, 15, 20, 20);
+	}
+	
+	public void loadShapes(){
+		zoomIn = app.loadShape("assets/magnify-plus.svg");
+		zoomOut = app.loadShape("assets/magnify-minus.svg");
+		imgNext = app.loadShape("assets/step-forward.svg");
+		imgPrev = app.loadShape("assets/step-backward.svg");
+		rotateL = app.loadShape("assets/rotate-left.svg");
+		rotateR = app.loadShape("assets/rotate-right.svg");
+		fullScreen = app.loadShape("assets/arrow-expand-all.svg");
+		noFullScreen = app.loadShape("assets/arrow-compress-all.svg");
+		imgFile = app.loadShape("assets/file-image.svg");
 	}
 	
 	public void pintarLista(){
