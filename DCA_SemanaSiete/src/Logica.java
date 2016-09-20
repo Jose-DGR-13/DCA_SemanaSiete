@@ -22,6 +22,8 @@ public class Logica {
 	LinkedList<Archivo> archivosLinked;
 	Archivo selector;
 	
+	Iterator<Archivo> iterator = archivosLinked.iterator();
+	
 	public Logica() {
 		init();
 	}
@@ -39,7 +41,7 @@ public class Logica {
 		loadShapes();
 		
 		//Por defecto carga el primer elemento del arrayList para mostrarlo
-		Iterator<Archivo> iterator = archivosLinked.iterator();
+		
 		Archivo archivoTemp = (Archivo) iterator.next();
 		selector = archivoTemp;
 	}
@@ -251,10 +253,14 @@ public class Logica {
 	
 	public void nextImage(){
 		
+		if( iterator.next() != null ){
+		Archivo archivoTemp = (Archivo) iterator.next();
+		selector = archivoTemp;
+		}
 	}
 	
 	public void prevImage(){
-		
+	
 	}
 	
 	//Mouse Events
