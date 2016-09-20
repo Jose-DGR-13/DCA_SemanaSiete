@@ -36,7 +36,11 @@ public class Logica {
 
 		archivosLinked.addAll(archivosArray);
 		
+<<<<<<< .merge_file_HQvPTv
 		ordenarAnchoA();
+=======
+		ordenarTipoA();
+>>>>>>> .merge_file_s6MCVc
 		
 		loadShapes();
 		
@@ -81,7 +85,7 @@ public class Logica {
 		Archivo archivoTemp = new Archivo(name,type,width,height,imgTemp);
 		
 		archivosArray.add(archivoTemp);
-		System.out.println(name+ " added to ArrayList");
+		//System.out.println(name+ " added to ArrayList");
 	}
 	
 	public void pintarInterfaz(){
@@ -168,10 +172,10 @@ public class Logica {
 		        }
 		    });
 		 
-		 for (Iterator<Archivo> iterator = archivosLinked.iterator(); iterator.hasNext();) {
+		/* for (Iterator<Archivo> iterator = archivosLinked.iterator(); iterator.hasNext();) {
 				Archivo archivoTemp = (Archivo) iterator.next();
 				System.out.println(archivoTemp.name);
-		 }
+		 }*/
 	}
 	
 	public void ordenarNombreD(){
@@ -187,10 +191,21 @@ public class Logica {
 	}
 	
 	public void ordenarTipoA(){
-		
+		 Collections.sort(archivosLinked, new Comparator<Archivo>() {
+			 
+		        @Override
+		        public int compare(Archivo p1, Archivo p2) {
+		            return (p1.type).compareTo(p2.type);
+		        }
+		    });
+		 
+		 for (Iterator<Archivo> iterator = archivosLinked.iterator(); iterator.hasNext();) {
+				Archivo archivoTemp = (Archivo) iterator.next();
+				System.out.println(archivoTemp.type);
+		 }
 	}
 	
-	public void ordenarTipoD(){
+	public void ordenarTipoD(){ 
 		
 	}
 	
