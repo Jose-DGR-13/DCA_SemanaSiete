@@ -36,11 +36,11 @@ public class Logica {
 
 		archivosLinked.addAll(archivosArray);
 		
-<<<<<<< .merge_file_HQvPTv
+
 		ordenarAnchoA();
-=======
+
 		ordenarTipoA();
->>>>>>> .merge_file_s6MCVc
+
 		
 		loadShapes();
 		
