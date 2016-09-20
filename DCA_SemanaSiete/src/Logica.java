@@ -41,6 +41,7 @@ public class Logica {
 
 		ordenarTipoA();
 
+		ordenarTipoD();
 		
 		loadShapes();
 		
@@ -172,10 +173,10 @@ public class Logica {
 		        }
 		    });
 		 
-		/* for (Iterator<Archivo> iterator = archivosLinked.iterator(); iterator.hasNext();) {
+		 for (Iterator<Archivo> iterator = archivosLinked.iterator(); iterator.hasNext();) {
 				Archivo archivoTemp = (Archivo) iterator.next();
 				System.out.println(archivoTemp.name);
-		 }*/
+		 }
 	}
 	
 	public void ordenarNombreD(){
@@ -206,7 +207,17 @@ public class Logica {
 	}
 	
 	public void ordenarTipoD(){ 
-		
+		 Collections.sort(archivosLinked, new Comparator<Archivo>() {
+			 
+		        @Override
+		        public int compare(Archivo p1, Archivo p2) {
+		            return (p2.type).compareTo(p1.type);
+		        }
+		    });
+		 for (Iterator<Archivo> iterator = archivosLinked.iterator(); iterator.hasNext();) {
+				Archivo archivoTemp = (Archivo) iterator.next();
+				System.out.println(archivoTemp.type);
+		 }
 	}
 	
 	public void ordenarAltoA(){
