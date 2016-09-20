@@ -1,5 +1,8 @@
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.regex.Pattern;
 
@@ -28,6 +31,11 @@ public class Logica {
 		archivosArray = new ArrayList<Archivo>();
 		archivosLinked = new LinkedList<Archivo>();
 		crearImagenes();
+		
+		archivosLinked.addAll(archivosArray);
+		
+		ordenarNombreD();
+		
 		loadShapes();
 		
 		//Por defecto carga el primer elemento del arrayList para mostrarlo
@@ -91,11 +99,6 @@ public class Logica {
 		app.stroke(0,0,0);
 		app.shape(imgFile, 25, 15, 20, 20);
 		
-		//Image List - Por ahora solo el arrayList, cuando ordene, debe tomarlo del linkedList
-		for (int i = 0; i < archivosArray.size(); i++) {
-			app.fill(0,0,0);
-			app.text(archivosArray.get(i).name, 20, 50+(20*i));
-		}
 		
 		//Pintar Imagen seleccionada
 		app.imageMode(app.CENTER);
@@ -125,9 +128,17 @@ public class Logica {
 	}
 	
 	public void pintarLista(){
-		/*
-		 * Metodo para refrescar la lista al realizar un nuevo reOrdenamiento
-		 * */
+		if(archivosLinked!= null){
+			int i = 0;
+			for (Iterator<Archivo> iterator = archivosLinked.iterator(); iterator.hasNext();) {
+				Archivo archivoTemp = (Archivo) iterator.next();
+				app.fill(0,0,0);
+				app.text(archivoTemp.name, 20, 50+(20*i));
+				i++;
+			}
+			
+			
+		}
 	}
 	
 	public void pintar(){
@@ -145,10 +156,29 @@ public class Logica {
 	
 	
 	public void ordenarNombreA(){
-		
+		 Collections.sort(archivosLinked, new Comparator<Archivo>() {
+			 
+		        @Override
+		        public int compare(Archivo p1, Archivo p2) {
+		            return p1.name.compareTo(p2.name);
+		        }
+		    });
+		 
+		 for (Iterator<Archivo> iterator = archivosLinked.iterator(); iterator.hasNext();) {
+				Archivo archivoTemp = (Archivo) iterator.next();
+				System.out.println(archivoTemp.name);
+		 }
 	}
 	
 	public void ordenarNombreD(){
+		 Collections.sort(archivosLinked, new Comparator<Archivo>() {
+			 
+		        @Override
+		        public int compare(Archivo p1, Archivo p2) {
+		            return p2.name.compareTo(p1.name);
+		        }
+		    });
+		
 		
 	}
 	
@@ -203,6 +233,10 @@ public class Logica {
 	
 	//Mouse Events
 	public void click(){
+		
+	}
+	
+	public void checkIfOnList(){
 		
 	}
 }
