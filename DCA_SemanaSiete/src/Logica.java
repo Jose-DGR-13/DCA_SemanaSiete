@@ -34,7 +34,7 @@ public class Logica {
 
 		archivosLinked.addAll(archivosArray);
 		
-		ordenarNombreD();
+		ordenarAnchoA();
 		
 		loadShapes();
 		
@@ -193,19 +193,43 @@ public class Logica {
 	}
 	
 	public void ordenarAltoA(){
-		
+		Collections.sort(archivosLinked, new Comparator<Archivo>() {
+			 
+	        @Override
+	        public int compare(Archivo p1, Archivo p2) {
+	            return p2.height-p1.height;
+	        }
+	    });
 	}
 	
 	public void ordenarAltoD(){
-		
+		Collections.sort(archivosLinked, new Comparator<Archivo>() {
+			 
+	        @Override
+	        public int compare(Archivo p1, Archivo p2) {
+	            return p1.height-p2.height;
+	        }
+	    });
 	}
 	
 	public void ordenarAnchoA(){
-		
+		Collections.sort(archivosLinked, new Comparator<Archivo>() {
+			 
+	        @Override
+	        public int compare(Archivo p1, Archivo p2) {
+	            return p1.width-(p2.width);
+	        }
+	    });
 	}
 	
 	public void ordenarAnchoD(){
-		
+		Collections.sort(archivosLinked, new Comparator<Archivo>() {
+			 
+	        @Override
+	        public int compare(Archivo p1, Archivo p2) {
+	            return p2.width-p1.width;
+	        }
+	    });
 	}
 	
 	
