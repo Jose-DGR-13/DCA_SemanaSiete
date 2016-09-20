@@ -22,6 +22,8 @@ public class Logica {
 	LinkedList<Archivo> archivosLinked;
 	Archivo selector;
 	
+	Iterator<Archivo> iterator = archivosLinked.iterator();
+	
 	public Logica() {
 		init();
 	}
@@ -31,15 +33,21 @@ public class Logica {
 		archivosArray = new ArrayList<Archivo>();
 		archivosLinked = new LinkedList<Archivo>();
 		crearImagenes();
-		
+
 		archivosLinked.addAll(archivosArray);
 		
+<<<<<<< .merge_file_HQvPTv
+		ordenarAnchoA();
+=======
 		ordenarTipoA();
+>>>>>>> .merge_file_s6MCVc
 		
 		loadShapes();
 		
 		//Por defecto carga el primer elemento del arrayList para mostrarlo
-		selector = archivosArray.get(0);
+		
+		Archivo archivoTemp = (Archivo) iterator.next();
+		selector = archivoTemp;
 	}
 	
 	//Cargar Imagenes y Crear objetos Archivo
@@ -202,19 +210,43 @@ public class Logica {
 	}
 	
 	public void ordenarAltoA(){
-		
+		Collections.sort(archivosLinked, new Comparator<Archivo>() {
+			 
+	        @Override
+	        public int compare(Archivo p1, Archivo p2) {
+	            return p2.height-p1.height;
+	        }
+	    });
 	}
 	
 	public void ordenarAltoD(){
-		
+		Collections.sort(archivosLinked, new Comparator<Archivo>() {
+			 
+	        @Override
+	        public int compare(Archivo p1, Archivo p2) {
+	            return p1.height-p2.height;
+	        }
+	    });
 	}
 	
 	public void ordenarAnchoA(){
-		
+		Collections.sort(archivosLinked, new Comparator<Archivo>() {
+			 
+	        @Override
+	        public int compare(Archivo p1, Archivo p2) {
+	            return p1.width-(p2.width);
+	        }
+	    });
 	}
 	
 	public void ordenarAnchoD(){
-		
+		Collections.sort(archivosLinked, new Comparator<Archivo>() {
+			 
+	        @Override
+	        public int compare(Archivo p1, Archivo p2) {
+	            return p2.width-p1.width;
+	        }
+	    });
 	}
 	
 	
@@ -236,10 +268,14 @@ public class Logica {
 	
 	public void nextImage(){
 		
+		if( iterator.next() != null ){
+		Archivo archivoTemp = (Archivo) iterator.next();
+		selector = archivoTemp;
+		}
 	}
 	
 	public void prevImage(){
-		
+	
 	}
 	
 	//Mouse Events
