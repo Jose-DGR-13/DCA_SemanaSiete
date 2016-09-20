@@ -31,7 +31,7 @@ public class Logica {
 		archivosArray = new ArrayList<Archivo>();
 		archivosLinked = new LinkedList<Archivo>();
 		crearImagenes();
-		
+
 		archivosLinked.addAll(archivosArray);
 		
 		ordenarNombreD();
@@ -39,7 +39,9 @@ public class Logica {
 		loadShapes();
 		
 		//Por defecto carga el primer elemento del arrayList para mostrarlo
-		selector = archivosArray.get(0);
+		Iterator<Archivo> iterator = archivosLinked.iterator();
+		Archivo archivoTemp = (Archivo) iterator.next();
+		selector = archivoTemp;
 	}
 	
 	//Cargar Imagenes y Crear objetos Archivo
