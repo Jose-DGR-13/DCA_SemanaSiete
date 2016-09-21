@@ -22,7 +22,7 @@ public class Logica {
 	LinkedList<Archivo> archivosLinked;
 	Archivo selector;
 	
-	Iterator<Archivo> iterator = archivosLinked.iterator();
+	Iterator<Archivo> iterator;
 	
 	public Logica() {
 		init();
@@ -35,13 +35,11 @@ public class Logica {
 		crearImagenes();
 
 		archivosLinked.addAll(archivosArray);
-		
 
-		ordenarAnchoA();
-
-		ordenarTipoA();
 
 		ordenarTipoD();
+		
+		Iterator<Archivo> iterator = archivosLinked.iterator();
 		
 		loadShapes();
 		
