@@ -10,7 +10,7 @@ public class Archivo implements Comparable<Archivo> {
 	String name, type;
 	int width, height;
 	PImage img;
-	private float size;
+	private float size = 1;
 
 	public Archivo(String _name, String _type, int _width, int _height, PImage _img) {
 
@@ -45,7 +45,6 @@ public class Archivo implements Comparable<Archivo> {
 		}
 	}
 
-
 	public void rotarDer() {
 
 	}
@@ -57,7 +56,7 @@ public class Archivo implements Comparable<Archivo> {
 	public void pintar() {
 		app.pushMatrix();
 		app.imageMode(app.CENTER);
-		app.translate(app.width/2, app.height/2);
+		app.translate(app.width / 2, app.height / 2);
 		app.scale(size);
 		app.image(img, 0, 0);
 		app.imageMode(app.CENTER);
@@ -76,6 +75,10 @@ public class Archivo implements Comparable<Archivo> {
 	public int compareTo(Archivo o) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public void setSize(float size2) {
+		this.size=size2;
 	}
 
 }

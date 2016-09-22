@@ -10,6 +10,8 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PShape;
 
+
+
 //En la carpeta docs queda un diagrama de clases basico para tener una idea de como se va a trabajar
 
 public class Logica {
@@ -28,7 +30,7 @@ public class Logica {
 	Iterator<Archivo> iterator;
 	// Float que me determina la rotación
 	float var;
-
+	private float size = 1;
 	// =========================================
 	public Logica() {
 		init();
@@ -346,7 +348,7 @@ public class Logica {
 		app.imageMode(app.CENTER);
 		app.image(selector.img, 0, 0);
 		app.popMatrix();
-		System.out.println("entro");
+		//System.out.println("entro");
 
 		if (app.dist(300, 360, app.mouseX, app.mouseY) <= 20 && full == false) {
 			if (posSelector - 1 >= 0) {
@@ -365,19 +367,33 @@ public class Logica {
 
 		// ============================= Áreas sensibles que me determinan la
 		// rotación, tanto como para izquierda como paar derecha =============
-		if (app.dist(800, 690, app.mouseX, app.mouseY) <= 20 && full == false) {
+		if (app.mouseX > 790 && app.mouseX < 810 && app.mouseY > 690 && app.mouseY < 710 && full == false) {
 			var += app.PI / 2;
 		}
-		if (app.dist(737, 690, app.mouseX, app.mouseY) <= 20 && full == false) {
+		if (app.mouseX > 730 && app.mouseX < 750 && app.mouseY > 690 && app.mouseY < 710 && full == false) {
 			var -= app.PI / 2;
 		}
 		// =====================================================================================================
 
 		prevImage();
+		
+		// ===========================Zoom=================================
+		if (app.mouseX > 750 && app.mouseX < 770 && app.mouseY > 690 && app.mouseY < 710) {
+			size += 0.2;
+			if (size >= 1.6f) {
+				size = 1.6f;
+			}
+		}
+		
+		if (app.mouseX > 770 && app.mouseX < 790 && app.mouseY > 690 && app.mouseY < 710) {
+			size -= 0.2;
+			if (size <= 1) {
+				size = 1;
+			}
+		}
 
-		selector.zoomIn();
-		selector.zoomOut();
-
+		selector.setSize(size);
+		System.out.println(size);
 	}
 
 	public void checkIfOnList() {
