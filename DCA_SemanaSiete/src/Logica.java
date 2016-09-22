@@ -17,6 +17,7 @@ public class Logica {
 	PApplet app = MainApp.app;
 	PShape zoomIn, zoomOut, fullScreen, noFullScreen, rotateL, rotateR, imgFile, imgNext, imgPrev;
 	boolean full = false;
+	int posSelector = 0;
 	
 	// Relaciones
 	ArrayList<Archivo> archivosArray;
@@ -187,7 +188,13 @@ public class Logica {
 	 * 
 	 * 
 	 */
-
+	public void resetArray(){
+		archivosArray.clear();
+		archivosArray.addAll(archivosLinked);
+		posSelector = 0;
+	}
+	
+	
 	public void ordenarNombreA() {
 		Collections.sort(archivosLinked, new Comparator<Archivo>() {
 
@@ -201,6 +208,8 @@ public class Logica {
 			Archivo archivoTemp = (Archivo) iterator.next();
 			System.out.println(archivoTemp.name);
 		}
+		
+		resetArray();
 	}
 
 	public void ordenarNombreD() {
@@ -211,6 +220,8 @@ public class Logica {
 				return p2.name.compareTo(p1.name);
 			}
 		});
+		
+		resetArray();
 
 	}
 
@@ -227,6 +238,7 @@ public class Logica {
 			Archivo archivoTemp = (Archivo) iterator.next();
 			System.out.println(archivoTemp.type);
 		}
+		resetArray();
 	}
 
 	public void ordenarTipoD() {
@@ -241,6 +253,7 @@ public class Logica {
 			Archivo archivoTemp = (Archivo) iterator.next();
 			System.out.println(archivoTemp.type);
 		}
+		resetArray();
 	}
 
 	public void ordenarAltoA() {
@@ -251,6 +264,7 @@ public class Logica {
 				return p2.height - p1.height;
 			}
 		});
+		resetArray();
 	}
 
 	public void ordenarAltoD() {
@@ -261,6 +275,7 @@ public class Logica {
 				return p1.height - p2.height;
 			}
 		});
+		resetArray();
 	}
 
 	public void ordenarAnchoA() {
@@ -271,6 +286,7 @@ public class Logica {
 				return p1.width - (p2.width);
 			}
 		});
+		resetArray();
 	}
 
 	public void ordenarAnchoD() {
@@ -281,6 +297,7 @@ public class Logica {
 				return p2.width - p1.width;
 			}
 		});
+		resetArray();
 	}
 
 	/*
@@ -300,27 +317,27 @@ public class Logica {
 
 	public void nextImage() {
 		if (app.dist(1260, 360, app.mouseX, app.mouseY)<= 20 && full == false) {
-		
-			Iterator<Archivo> iterator = archivosLinked.iterator();
-			if (iterator.hasNext()) {
-			
-				Archivo archivoTemp = (Archivo) iterator.next();
-				selector = archivoTemp;
-			//selector = iterator.next();
-			System.out.println("Next:"+ selector.name);
+			if(posSelector + 1 <= archivosArray.size()){
+			posSelector = posSelector + 1;
+			selector = archivosArray.get(posSelector);
+			}
 		}
-		}
-		
 	}
 	
 	public void prevImage() {
-
+		if (app.dist(300, 360, app.mouseX, app.mouseY)<= 20 && full == false) {
+			if(posSelector - 1 >= 0){
+			posSelector = posSelector - 1;
+			selector = archivosArray.get(posSelector);
+			}
+		}
 	}
 
 	// Mouse Events
 	public void click() {
 		setFullScreen();
 		nextImage();
+		prevImage();
 	}
 
 	public void checkIfOnList() {
