@@ -10,24 +10,28 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PShape;
 
+
+
 //En la carpeta docs queda un diagrama de clases basico para tener una idea de como se va a trabajar
 
 public class Logica {
 	// Atributes
 	PApplet app = MainApp.app;
 	PShape zoomIn, zoomOut, fullScreen, noFullScreen, rotateL, rotateR, imgFile, imgNext, imgPrev;
+	// Boolean que me determina si está en full o no
 	boolean full = false;
 	int posSelector = 0;
-	
+
 	// Relaciones
 	ArrayList<Archivo> archivosArray;
 	LinkedList<Archivo> archivosLinked;
 	Archivo selector;
 
 	Iterator<Archivo> iterator;
-
-	
-
+	// Float que me determina la rotación
+	float var;
+	private float size = 1;
+	// =========================================
 	public Logica() {
 		init();
 	}
@@ -93,11 +97,10 @@ public class Logica {
 	}
 
 	public void pintarInterfaz() {
-		
 
 		// Pintar Imagen seleccionada
-		
-		//Manejador de Full Screen
+
+		// Manejador de Full Screen
 		app.imageMode(app.CENTER);
 		if (full) {
 			app.pushMatrix();
@@ -105,14 +108,14 @@ public class Logica {
 			app.scale(2);
 			app.image(selector.img, 0, 0);
 			app.popMatrix();
-			
+
 			noFullScreen.disableStyle();
 			app.fill(120, 120, 120);
 			app.stroke(255, 255, 255);
 			app.shape(noFullScreen, 1260, 15, 20, 20);
 
 		} else {
-			
+
 			// Left Panel
 
 			// gray bg
@@ -130,14 +133,14 @@ public class Logica {
 			app.strokeWeight(1);
 			app.stroke(0, 0, 0);
 			app.shape(imgFile, 25, 15, 20, 20);
-			
+
 			app.pushMatrix();
 			app.scale(1);
 			app.image(selector.img, 500 + 280, 360);
 			app.popMatrix();
-		
+
 			pintarLista();
-			
+
 			// Pintar resto de iconos
 			app.shape(zoomIn, 760, 700, 20, 20);
 			app.shape(zoomOut, 780, 700, 20, 20);
@@ -147,8 +150,7 @@ public class Logica {
 			app.shape(imgNext, 1260, 360, 20, 20);
 			app.shape(fullScreen, 1260, 15, 20, 20);
 		}
-		
-		
+
 	}
 
 	public void loadShapes() {
@@ -178,7 +180,7 @@ public class Logica {
 
 	public void pintar() {
 		pintarInterfaz();
-		
+		rotar();
 	}
 
 	/*
@@ -188,13 +190,12 @@ public class Logica {
 	 * 
 	 * 
 	 */
-	public void resetArray(){
+	public void resetArray() {
 		archivosArray.clear();
 		archivosArray.addAll(archivosLinked);
 		posSelector = 0;
 	}
-	
-	
+
 	public void ordenarNombreA() {
 		Collections.sort(archivosLinked, new Comparator<Archivo>() {
 
@@ -208,7 +209,7 @@ public class Logica {
 			Archivo archivoTemp = (Archivo) iterator.next();
 			System.out.println(archivoTemp.name);
 		}
-		
+
 		resetArray();
 	}
 
@@ -220,7 +221,7 @@ public class Logica {
 				return p2.name.compareTo(p1.name);
 			}
 		});
-		
+
 		resetArray();
 
 	}
@@ -308,36 +309,91 @@ public class Logica {
 	 */
 
 	public void setFullScreen() {
-		if (app.dist(1260, 15, app.mouseX, app.mouseY)<= 20) {
-			full =!full;
+		if (app.dist(1260, 15, app.mouseX, app.mouseY) <= 20) {
+			full = !full;
 		}
 	}
-
-
 
 	public void nextImage() {
-		if (app.dist(1260, 360, app.mouseX, app.mouseY)<= 20 && full == false) {
-			if(posSelector + 1 <= archivosArray.size()){
-			posSelector = posSelector + 1;
-			selector = archivosArray.get(posSelector);
+
+		if (app.dist(1260, 360, app.mouseX, app.mouseY) <= 20 && full == false) {
+
+			Iterator<Archivo> iterator = archivosLinked.iterator();
+			if (iterator.hasNext()) {
+
+				Archivo archivoTemp = (Archivo) iterator.next();
+				selector = archivoTemp;
+				// selector = iterator.next();
+				System.out.println("Next:" + selector.name);
+
+				if (app.dist(1260, 360, app.mouseX, app.mouseY) <= 20 && full == false) {
+					if (posSelector + 1 <= archivosArray.size()) {
+						posSelector = posSelector + 1;
+						selector = archivosArray.get(posSelector);
+					}
+				}
 			}
 		}
 	}
-	
+// por probar 
 	public void prevImage() {
-		if (app.dist(300, 360, app.mouseX, app.mouseY)<= 20 && full == false) {
-			if(posSelector - 1 >= 0){
-			posSelector = posSelector - 1;
-			selector = archivosArray.get(posSelector);
+
+	}
+
+	// Método que me permite la rotación de la imagen
+	public void rotar() {
+		app.pushMatrix();
+		app.translate(app.width / 2 + 140, app.height / 2);
+		app.rotate((float) (var / 1.0));
+		app.imageMode(app.CENTER);
+		app.image(selector.img, 0, 0);
+		app.popMatrix();
+		//System.out.println("entro");
+
+		if (app.dist(300, 360, app.mouseX, app.mouseY) <= 20 && full == false) {
+			if (posSelector - 1 >= 0) {
+				posSelector = posSelector - 1;
+				selector = archivosArray.get(posSelector);
 			}
 		}
+
 	}
 
 	// Mouse Events
+	
 	public void click() {
 		setFullScreen();
 		nextImage();
+
+		// ============================= Áreas sensibles que me determinan la
+		// rotación, tanto como para izquierda como paar derecha =============
+		if (app.mouseX > 790 && app.mouseX < 810 && app.mouseY > 690 && app.mouseY < 710 && full == false) {
+			var += app.PI / 2;
+		}
+		if (app.mouseX > 730 && app.mouseX < 750 && app.mouseY > 690 && app.mouseY < 710 && full == false) {
+			var -= app.PI / 2;
+		}
+		// =====================================================================================================
+
 		prevImage();
+		
+		// ===========================Zoom=================================
+		if (app.mouseX > 750 && app.mouseX < 770 && app.mouseY > 690 && app.mouseY < 710) {
+			size += 0.2;
+			if (size >= 1.6f) {
+				size = 1.6f;
+			}
+		}
+		
+		if (app.mouseX > 770 && app.mouseX < 790 && app.mouseY > 690 && app.mouseY < 710) {
+			size -= 0.2;
+			if (size <= 1) {
+				size = 1;
+			}
+		}
+
+		selector.setSize(size);
+		System.out.println(size);
 	}
 	
 	
