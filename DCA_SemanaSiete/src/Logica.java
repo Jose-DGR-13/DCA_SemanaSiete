@@ -334,10 +334,13 @@ public class Logica {
 	}
 
 	// Mouse Events
+	
 	public void click() {
 		setFullScreen();
 		nextImage();
 		prevImage();
+		selector.zoomIn();
+		selector.zoomOut();
 	}
 
 	public void checkIfOnList() {
