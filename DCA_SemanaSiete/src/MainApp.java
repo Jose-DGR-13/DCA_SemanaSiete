@@ -4,7 +4,7 @@ public class MainApp extends PApplet {
 
 	static PApplet app;
 	Logica logica;
-	
+
 	public void settings() {
 		size(1280, 720);
 	}
@@ -16,16 +16,15 @@ public class MainApp extends PApplet {
 
 	public void draw() {
 		background(255);
-		logica.pintar();
+		logica.pintar();		
 	}
 
 	public static void main(String[] args) {
 		PApplet.main("MainApp");
 
 	}
-	
-	
-	//Mouse Events
+
+	// Mouse Events
 	public void mouseClicked() {
 		logica.click();
 	}

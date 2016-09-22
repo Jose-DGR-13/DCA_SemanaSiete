@@ -32,9 +32,6 @@ public class Archivo implements Comparable<Archivo> {
 
 	}
 
-	public void rotarIzq() {
-
-	}
 
 	public void rotarDer() {
 
