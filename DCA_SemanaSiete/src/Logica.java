@@ -10,17 +10,18 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PShape;
 
-
-
 //En la carpeta docs queda un diagrama de clases basico para tener una idea de como se va a trabajar
 
 public class Logica {
 	// Atributes
 	PApplet app = MainApp.app;
 	PShape zoomIn, zoomOut, fullScreen, noFullScreen, rotateL, rotateR, imgFile, imgNext, imgPrev;
-	// Boolean que me determina si está en full o no
+	// Boolean que me determina si estï¿½ en full o no
 	boolean full = false;
 	int posSelector = 0;
+	// Float que me determina la rotaciï¿½n
+	float var;
+	private float size = 1;
 
 	// Relaciones
 	ArrayList<Archivo> archivosArray;
@@ -28,9 +29,7 @@ public class Logica {
 	Archivo selector;
 
 	Iterator<Archivo> iterator;
-	// Float que me determina la rotación
-	float var;
-	private float size = 1;
+
 	// =========================================
 	public Logica() {
 		init();
@@ -194,6 +193,7 @@ public class Logica {
 		archivosArray.clear();
 		archivosArray.addAll(archivosLinked);
 		posSelector = 0;
+		selector = archivosArray.get(posSelector);
 	}
 
 	public void ordenarNombreA() {
@@ -211,6 +211,7 @@ public class Logica {
 		}
 
 		resetArray();
+		
 	}
 
 	public void ordenarNombreD() {
@@ -298,7 +299,7 @@ public class Logica {
 				return p2.width - p1.width;
 			}
 		});
-		resetArray();	
+		resetArray();
 	}
 
 	/*
@@ -315,40 +316,39 @@ public class Logica {
 	}
 
 	public void nextImage() {
-
-		if (app.dist(1260, 360, app.mouseX, app.mouseY) <= 20 && full == false) {
-
-			Iterator<Archivo> iterator = archivosLinked.iterator();
-			if (iterator.hasNext()) {
-
-				Archivo archivoTemp = (Archivo) iterator.next();
-				selector = archivoTemp;
-				// selector = iterator.next();
-				System.out.println("Next:" + selector.name);
-
-				if (app.dist(1260, 360, app.mouseX, app.mouseY) <= 20 && full == false) {
-					if (posSelector + 1 <= archivosArray.size()) {
-						posSelector = posSelector + 1;
-						selector = archivosArray.get(posSelector);
-					}
+		if (posSelector + 1 <= archivosArray.size()) {
+			if (app.dist(1260, 360, app.mouseX, app.mouseY) <= 20 && full == false) {
+				if (posSelector + 1 <= archivosArray.size()) {
+					posSelector = posSelector + 1;
+					selector = archivosArray.get(posSelector);
 				}
 			}
 		}
 	}
-// por probar 
+
 	public void prevImage() {
+
+		if (app.dist(300, 360, app.mouseX, app.mouseY) <= 20 && full == false) {
+			if (posSelector - 1 >= 0) {
+				posSelector = posSelector - 1;
+				selector = archivosArray.get(posSelector);
+			}
+		}
 
 	}
 
-	// Método que me permite la rotación de la imagen
+	// Metodo que me permite la rotacien de la imagen
 	public void rotar() {
-		app.pushMatrix();
-		app.translate(app.width / 2 + 140, app.height / 2);
-		app.rotate((float) (var / 1.0));
-		app.imageMode(app.CENTER);
-		app.image(selector.img, 0, 0);
-		app.popMatrix();
-		//System.out.println("entro");
+		if (full == false) {
+			app.pushMatrix();
+			app.translate(app.width / 2 + 140, app.height / 2);
+			app.rotate((float) (var / 1.0));
+			app.imageMode(app.CENTER);
+			app.image(selector.img, 0, 0);
+			app.popMatrix();
+			// System.out.println("entro");
+
+		}
 
 		if (app.dist(300, 360, app.mouseX, app.mouseY) <= 20 && full == false) {
 			if (posSelector - 1 >= 0) {
@@ -360,43 +360,52 @@ public class Logica {
 	}
 
 	// Mouse Events
-	
+
 	public void click() {
 		setFullScreen();
 		nextImage();
-
-		// ============================= Áreas sensibles que me determinan la
-		// rotación, tanto como para izquierda como paar derecha =============
-		if (app.mouseX > 790 && app.mouseX < 810 && app.mouseY > 690 && app.mouseY < 710 && full == false) {
-			var += app.PI / 2;
-		}
-		if (app.mouseX > 730 && app.mouseX < 750 && app.mouseY > 690 && app.mouseY < 710 && full == false) {
-			var -= app.PI / 2;
-		}
-		// =====================================================================================================
-
 		prevImage();
-		
-		// ===========================Zoom=================================
-		if (app.mouseX > 750 && app.mouseX < 770 && app.mouseY > 690 && app.mouseY < 710) {
+		zoomIn();
+		zoomOut();
+		rotarIzq();
+		rotarDer();
+	}
+
+	public void zoomIn() {
+		if (app.dist(760, 700, app.mouseX, app.mouseY) <= 10 && full == false) {
 			size += 0.2;
 			if (size >= 1.6f) {
 				size = 1.6f;
 			}
+			selector.setSize(size);
+			System.out.println("zoomIn");
 		}
-		
-		if (app.mouseX > 770 && app.mouseX < 790 && app.mouseY > 690 && app.mouseY < 710) {
+
+	}
+
+	public void zoomOut() {
+		if (app.dist(780, 700, app.mouseX, app.mouseY) <= 10 && full == false) {
 			size -= 0.2;
 			if (size <= 1) {
 				size = 1;
 			}
+			selector.setSize(size);
+			System.out.println("zoomOut");
 		}
 
-		selector.setSize(size);
-		System.out.println(size);
 	}
-	
-	
+
+	public void rotarIzq() {
+		if (app.dist(740, 700, app.mouseX, app.mouseY) <= 10 && full == false) {
+			var -= app.PI / 2;
+		}
+	}
+
+	public void rotarDer() {
+		if (app.dist(800, 700, app.mouseX, app.mouseY) <= 10 && full == false) {
+			var += app.PI / 2;
+		}
+	}
 
 	public void checkIfOnList() {
 
