@@ -297,7 +297,7 @@ public class Logica {
 				return p2.width - p1.width;
 			}
 		});
-		resetArray();
+		resetArray();	
 	}
 
 	/*
@@ -339,6 +339,8 @@ public class Logica {
 		nextImage();
 		prevImage();
 	}
+	
+	
 
 	public void checkIfOnList() {
 
