@@ -16,7 +16,8 @@ public class Logica {
 	// Atributes
 	PApplet app = MainApp.app;
 	PShape zoomIn, zoomOut, fullScreen, noFullScreen, rotateL, rotateR, imgFile, imgNext, imgPrev;
-
+	boolean full = false;
+	
 	// Relaciones
 	ArrayList<Archivo> archivosArray;
 	LinkedList<Archivo> archivosLinked;
@@ -24,7 +25,7 @@ public class Logica {
 
 	Iterator<Archivo> iterator;
 
-	boolean full = false;
+	
 
 	public Logica() {
 		init();
@@ -38,7 +39,7 @@ public class Logica {
 
 		archivosLinked.addAll(archivosArray);
 
-		ordenarTipoD();
+		ordenarNombreD();
 
 		Iterator<Archivo> iterator = archivosLinked.iterator();
 
@@ -91,25 +92,11 @@ public class Logica {
 	}
 
 	public void pintarInterfaz() {
-		// Left Panel
-
-		// gray bg
-		app.fill(200, 200, 200);
-		app.rect(0, 0, 280, 720);
-
-		// text1
-		app.fill(255, 255, 255);
-		app.text("Lista de Imagenes", 50, 20);
-
-		// icon1
-		app.shapeMode(app.CENTER);
-		imgFile.disableStyle(); // Ignore the colors in the SVG
-		app.fill(255, 255, 255); // Set the SVG fill to blue
-		app.strokeWeight(1);
-		app.stroke(0, 0, 0);
-		app.shape(imgFile, 25, 15, 20, 20);
+		
 
 		// Pintar Imagen seleccionada
+		
+		//Manejador de Full Screen
 		app.imageMode(app.CENTER);
 		if (full) {
 			app.pushMatrix();
@@ -117,22 +104,50 @@ public class Logica {
 			app.scale(2);
 			app.image(selector.img, 0, 0);
 			app.popMatrix();
+			
+			noFullScreen.disableStyle();
+			app.fill(120, 120, 120);
+			app.stroke(255, 255, 255);
+			app.shape(noFullScreen, 1260, 15, 20, 20);
 
 		} else {
+			
+			// Left Panel
+
+			// gray bg
+			app.fill(200, 200, 200);
+			app.rect(0, 0, 280, 720);
+
+			// text1
+			app.fill(255, 255, 255);
+			app.text("Lista de Imagenes", 50, 20);
+
+			// icon1
+			app.shapeMode(app.CENTER);
+			imgFile.disableStyle(); // Ignore the colors in the SVG
+			app.fill(255, 255, 255); // Set the SVG fill to blue
+			app.strokeWeight(1);
+			app.stroke(0, 0, 0);
+			app.shape(imgFile, 25, 15, 20, 20);
+			
 			app.pushMatrix();
 			app.scale(1);
 			app.image(selector.img, 500 + 280, 360);
 			app.popMatrix();
+		
+			pintarLista();
+			
+			// Pintar resto de iconos
+			app.shape(zoomIn, 760, 700, 20, 20);
+			app.shape(zoomOut, 780, 700, 20, 20);
+			app.shape(rotateL, 740, 700, 20, 20);
+			app.shape(rotateR, 800, 700, 20, 20);
+			app.shape(imgPrev, 300, 360, 20, 20);
+			app.shape(imgNext, 1260, 360, 20, 20);
+			app.shape(fullScreen, 1260, 15, 20, 20);
 		}
-		// Pintar resto de iconos
-		app.shape(zoomIn, 760, 700, 20, 20);
-		app.shape(zoomOut, 780, 700, 20, 20);
-		app.shape(rotateL, 740, 700, 20, 20);
-		app.shape(rotateR, 800, 700, 20, 20);
-		app.shape(imgPrev, 300, 360, 20, 20);
-		app.shape(imgNext, 1260, 360, 20, 20);
-		app.shape(fullScreen, 1260, 15, 20, 20);
-		app.shape(noFullScreen, 1240, 15, 20, 20);
+		
+		
 	}
 
 	public void loadShapes() {
@@ -162,7 +177,7 @@ public class Logica {
 
 	public void pintar() {
 		pintarInterfaz();
-		pintarLista();
+		
 	}
 
 	/*
@@ -276,7 +291,7 @@ public class Logica {
 	 */
 
 	public void setFullScreen() {
-		if (app.mouseX > 0 && app.mouseX < 1200 && app.mouseY > 0 && app.mouseY < 700) {
+		if (app.dist(1260, 15, app.mouseX, app.mouseY)<= 20) {
 			full =!full;
 		}
 	}
@@ -284,13 +299,20 @@ public class Logica {
 
 
 	public void nextImage() {
-
-		if (iterator.next() != null) {
-			Archivo archivoTemp = (Archivo) iterator.next();
-			selector = archivoTemp;
+		if (app.dist(1260, 360, app.mouseX, app.mouseY)<= 20 && full == false) {
+		
+			Iterator<Archivo> iterator = archivosLinked.iterator();
+			if (iterator.hasNext()) {
+			
+				Archivo archivoTemp = (Archivo) iterator.next();
+				selector = archivoTemp;
+			//selector = iterator.next();
+			System.out.println("Next:"+ selector.name);
 		}
+		}
+		
 	}
-
+	
 	public void prevImage() {
 
 	}
@@ -298,7 +320,7 @@ public class Logica {
 	// Mouse Events
 	public void click() {
 		setFullScreen();
-
+		nextImage();
 	}
 
 	public void checkIfOnList() {
