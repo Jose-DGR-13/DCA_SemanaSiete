@@ -26,27 +26,16 @@ public class Archivo implements Comparable<Archivo> {
 	 * Manipulacion de Imagen
 	 */
 	public void zoomIn() {
-		if (app.mouseX > 750 && app.mouseX < 770 && app.mouseY > 690 && app.mouseY < 700) {
-			size += 0.2;
-			if (size >= 1.6f) {
-				size = 1.6f;
-			}
-			System.out.println("entro");
-		}
+	width = width +(int) (width*0.1);
+	height = height + (int) (height*0.1);
+	img.resize(width, height);
 	}
 
 	public void zoomOut() {
-		if (app.mouseX > 770 && app.mouseX < 790 && app.mouseY > 690 && app.mouseY < 700) {
-			size -= 0.2;
-			if (size <= 1) {
-				size = 1;
-			}
-			System.out.println("entro2");
-		}
-	}
-
-	public void rotarDer() {
-
+		width = width - (int) (width*0.1);
+		height = height - (int) (height*0.1);
+		img.resize(width, height);
+		//System.out.println("ZoomOut Class");
 	}
 
 	public void loadImage() {
@@ -57,20 +46,12 @@ public class Archivo implements Comparable<Archivo> {
 		app.pushMatrix();
 		app.imageMode(app.CENTER);
 		app.translate(app.width / 2, app.height / 2);
-		app.scale(size);
 		app.image(img, 0, 0);
 		app.imageMode(app.CENTER);
 		app.popMatrix();
 		System.out.println(size);
 	}
 
-	/*
-	 * //toDo
-	 * 
-	 * @Override public int compareTo(Object o) { // TODO Auto-generated method
-	 * stub return 0; }
-	 */
-	// toDo
 	@Override
 	public int compareTo(Archivo o) {
 		// TODO Auto-generated method stub

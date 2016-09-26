@@ -139,17 +139,21 @@ public class Logica {
 			app.popMatrix();
 
 			pintarLista();
-
-			// Pintar resto de iconos
-			app.shape(zoomIn, 760, 700, 20, 20);
-			app.shape(zoomOut, 780, 700, 20, 20);
-			app.shape(rotateL, 740, 700, 20, 20);
-			app.shape(rotateR, 800, 700, 20, 20);
-			app.shape(imgPrev, 300, 360, 20, 20);
-			app.shape(imgNext, 1260, 360, 20, 20);
-			app.shape(fullScreen, 1260, 15, 20, 20);
+			paintIcons();
+			
 		}
 
+	}
+	
+	public void paintIcons(){
+		// Pintar resto de iconos
+					app.shape(zoomIn, 760, 700, 20, 20);
+					app.shape(zoomOut, 780, 700, 20, 20);
+					app.shape(rotateL, 740, 700, 20, 20);
+					app.shape(rotateR, 800, 700, 20, 20);
+					app.shape(imgPrev, 300, 360, 20, 20);
+					app.shape(imgNext, 1260, 360, 20, 20);
+					app.shape(fullScreen, 1260, 15, 20, 20);
 	}
 
 	public void loadShapes() {
@@ -180,6 +184,7 @@ public class Logica {
 	public void pintar() {
 		pintarInterfaz();
 		rotar();
+		paintIcons();
 	}
 
 	/*
@@ -189,6 +194,8 @@ public class Logica {
 	 * 
 	 * 
 	 */
+	
+	//Empty Arraylist to dump fresh linkedList data on it
 	public void resetArray() {
 		archivosArray.clear();
 		archivosArray.addAll(archivosLinked);
@@ -211,7 +218,7 @@ public class Logica {
 		}
 
 		resetArray();
-		
+
 	}
 
 	public void ordenarNombreD() {
@@ -316,7 +323,7 @@ public class Logica {
 	}
 
 	public void nextImage() {
-		if (posSelector + 1 <= archivosArray.size()) {
+		if (posSelector + 1 < archivosArray.size()) {
 			if (app.dist(1260, 360, app.mouseX, app.mouseY) <= 20 && full == false) {
 				if (posSelector + 1 <= archivosArray.size()) {
 					posSelector = posSelector + 1;
@@ -373,24 +380,14 @@ public class Logica {
 
 	public void zoomIn() {
 		if (app.dist(760, 700, app.mouseX, app.mouseY) <= 10 && full == false) {
-			size += 0.2;
-			if (size >= 1.6f) {
-				size = 1.6f;
-			}
-			selector.setSize(size);
-			System.out.println("zoomIn");
+			selector.zoomIn();
 		}
-
 	}
 
 	public void zoomOut() {
 		if (app.dist(780, 700, app.mouseX, app.mouseY) <= 10 && full == false) {
-			size -= 0.2;
-			if (size <= 1) {
-				size = 1;
-			}
-			selector.setSize(size);
-			System.out.println("zoomOut");
+			selector.zoomOut();
+				System.out.println("ZoomOutButton");
 		}
 
 	}
@@ -411,3 +408,4 @@ public class Logica {
 
 	}
 }
+/**/
