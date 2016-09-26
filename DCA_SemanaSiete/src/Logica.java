@@ -376,6 +376,7 @@ public class Logica {
 		zoomOut();
 		rotarIzq();
 		rotarDer();
+		checkIfOnList();
 	}
 
 	public void zoomIn() {
@@ -405,7 +406,12 @@ public class Logica {
 	}
 
 	public void checkIfOnList() {
-
+		
+		for (int i = 0; i < archivosArray.size(); i++) {
+			if(app.mouseX >=20 && app.mouseX <= 280 && app.mouseY >= 45+(20*i) && app.mouseY <= 65+(20*i)){
+				selector = archivosArray.get(i);
+			}
+		}
 	}
 }
 /**/
